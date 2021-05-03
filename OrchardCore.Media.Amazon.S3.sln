@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchardCore.FileStorage.Amazon.S3", "src\OrchardCore.FileStorage.Amazon.S3\OrchardCore.FileStorage.Amazon.S3.csproj", "{9CB010B2-D0AC-4D36-B2E2-C8ECB672F631}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchardCore.Media.Amazon.S3", "src\OrchardCore.Media.Amazon.S3\OrchardCore.Media.Amazon.S3.csproj", "{E7487D01-15E9-44DA-A78A-01C1E081CDC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{9CB010B2-D0AC-4D36-B2E2-C8ECB672F631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CB010B2-D0AC-4D36-B2E2-C8ECB672F631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CB010B2-D0AC-4D36-B2E2-C8ECB672F631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7487D01-15E9-44DA-A78A-01C1E081CDC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7487D01-15E9-44DA-A78A-01C1E081CDC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7487D01-15E9-44DA-A78A-01C1E081CDC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7487D01-15E9-44DA-A78A-01C1E081CDC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -50,12 +50,12 @@
                 
                 if (string.IsNullOrWhiteSpace(Credentials.AccessKeyId))
                 {
-                    yield return new ValidationResult("AccessKeyId is required attribute for S3 Media, make sure it exists in Credentials section or ProfileName you specified");
+                    yield return new ValidationResult(Constants.ValidationMessages.AccessKeyIdIsEmpty);
                 }
                 
                 if (string.IsNullOrWhiteSpace(Credentials.RegionEndpoint))
                 {
-                    yield return new ValidationResult("Region is required attribute for S3 Media, make sure it exists in Credentials section or ProfileName you specified");
+                    yield return new ValidationResult(Constants.ValidationMessages.RegionEndpointIsEmpty);
                 }
             }
         }

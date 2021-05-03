@@ -74,7 +74,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
             return null;
         }
 
-        // TODO: Think about changing method signature to AsyncEnumerable
+        // TODO: Change this method to IAsyncEnumerable<IFileStoreEntry> when Orchard will publish latest package
         public async Task<IEnumerable<IFileStoreEntry>> GetDirectoryContentAsync(string path = null, bool includeSubDirectories = false)
         {
             var listObjectsResponse = await _amazonS3Client.ListObjectsV2Async(new ListObjectsV2Request
