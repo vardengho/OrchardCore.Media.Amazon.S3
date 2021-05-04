@@ -1,8 +1,5 @@
 ﻿namespace OrchardCore.FileStorage.Amazon.S3
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
     /// <summary>
     /// AWS storage options.
     /// </summary>
@@ -27,38 +24,7 @@
         /// </remarks>
         /// </summary>
         public AwsStorageCredentials Credentials { get; set; }
-
-        /// <summary>
-        /// The validate.
-        /// </summary>
-        /// <returns>
-        /// The collection of errors.
-        /// </returns>
-        public IEnumerable<ValidationResult> Validate()
-        {
-            if (string.IsNullOrWhiteSpace(BucketName))
-            {
-                yield return new ValidationResult(Constants.ValidationMessages.BucketNameIsEmpty);
-            }
-
-            if (Credentials != null)
-            {
-                if (string.IsNullOrWhiteSpace(Credentials.SecretKey))
-                {
-                    yield return new ValidationResult(Constants.ValidationMessages.SecretKeyIsEmpty);
-                }
-                
-                if (string.IsNullOrWhiteSpace(Credentials.AccessKeyId))
-                {
-                    yield return new ValidationResult(Constants.ValidationMessages.AccessKeyIdIsEmpty);
-                }
-                
-                if (string.IsNullOrWhiteSpace(Credentials.RegionEndpoint))
-                {
-                    yield return new ValidationResult(Constants.ValidationMessages.RegionEndpointIsEmpty);
-                }
-            }
-        }
+        
     }
 
     /// <summary>

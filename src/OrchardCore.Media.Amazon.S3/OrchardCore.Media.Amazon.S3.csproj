@@ -12,4 +12,8 @@
       <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-13450" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\OrchardCore.FileStorage.Amazon.S3\OrchardCore.FileStorage.Amazon.S3.csproj" />
+    </ItemGroup>
+
 </Project>
