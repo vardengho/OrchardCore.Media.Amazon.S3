@@ -1,5 +1,5 @@
 # OrchardCore.Media.Amazon.S3
-### Amazon S3 bucket provider for OrchardCore CMF
+### Amazon S3 bucket provider for OrchardCore
 
 To use this feature you should enable 'OrchardCore.Media.Amazon.S3' in the Orchard admin panel.
 ***
