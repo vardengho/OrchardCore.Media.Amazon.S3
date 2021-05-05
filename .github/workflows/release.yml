@@ -1,0 +1,33 @@
+name: OrchardCore Media Amazon S3 - Release
+
+on:
+  workflow_run:
+    workflows: ["OrchardCore Media Amazon S3 - CI"]
+    branches: [ main ]
+    types:
+      - completed
+  
+    strategy:
+    matrix:
+      dotnet-version: ['3.1.x']
+
+jobs:
+  publish-nuget:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core ${{ matrix.dotnet-version }}
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Publish to NuGet
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: src/OrchardCore.Media.Amazon.S3/OrchardCore.Media.Amazon.S3.csproj
+        VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
+        TAG_FORMAT: '*'
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
