@@ -34,7 +34,7 @@ jobs:
     - name: Publish to NuGet OrchardCore.Media.Amazon.S3
       uses: brandedoutcast/publish-nuget@v2
       with:
-        PROJECT_FILE_PATH: src/OrchardCore.Media.Amazon.S3/OrchardCore.FileStorage.Amazon.S3.csproj
+        PROJECT_FILE_PATH: src/OrchardCore.FileStorage.Amazon.S3/OrchardCore.FileStorage.Amazon.S3.csproj
         VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
         TAG_FORMAT: '*'
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
