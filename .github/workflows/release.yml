@@ -1,11 +1,9 @@
 name: OrchardCore Media Amazon S3 - Release
 
 on:
-  workflow_run:
-    workflows: ["OrchardCore Media Amazon S3 - CI"]
-    branches: [ main ]
-    types:
-      - completed
+  push:
+    branches:
+    - main
   
 jobs:
   publish-nuget:
@@ -15,7 +13,7 @@ jobs:
         dotnet-version: ['3.1.x']
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core ${{ matrix.dotnet-version }}
