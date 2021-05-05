@@ -2,6 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageVersion>1.0.1</PackageVersion>
+        <Title>ngv.OrchardCore.Media.Amazon.S3</Title>
+        <Authors>ngv</Authors>
+        <PackageProjectUrl>https://github.com/neglectedvalue/OrchardCore.Media.Amazon.S3</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/neglectedvalue/OrchardCore.Media.Amazon.S3</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
