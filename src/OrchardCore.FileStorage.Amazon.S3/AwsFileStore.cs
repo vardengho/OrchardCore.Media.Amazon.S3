@@ -251,9 +251,9 @@ namespace OrchardCore.FileStorage.Amazon.S3
             }
         }
 
-        public async Task<Stream> GetFileStreamAsync(IFileStoreEntry fileStoreEntry)
+        public Task<Stream> GetFileStreamAsync(IFileStoreEntry fileStoreEntry)
         {
-            return await GetFileStreamAsync(fileStoreEntry.Path);
+            return GetFileStreamAsync(fileStoreEntry.Path);
         }
 
         public async Task<string> CreateFileFromStreamAsync(string path, Stream inputStream, bool overwrite = false)
