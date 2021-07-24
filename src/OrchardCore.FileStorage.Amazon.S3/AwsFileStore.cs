@@ -74,8 +74,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
             return null;
         }
 
-        // TODO: Change this method to IAsyncEnumerable<IFileStoreEntry> when Orchard will publish latest package
-        public async Task<IEnumerable<IFileStoreEntry>> GetDirectoryContentAsync(string path = null, bool includeSubDirectories = false)
+        public async IAsyncEnumerable<IFileStoreEntry> GetDirectoryContentAsync(string path = null, bool includeSubDirectories = false)
         {
             var listObjectsResponse = await _amazonS3Client.ListObjectsV2Async(new ListObjectsV2Request
             {
@@ -85,7 +84,6 @@ namespace OrchardCore.FileStorage.Amazon.S3
                 FetchOwner = false,
             });
 
-            var results = new List<IFileStoreEntry>();
             foreach (var file in listObjectsResponse.S3Objects)
             {
                 var itemName = Path.GetFileName(WebUtility.UrlDecode(file.Key));
@@ -97,7 +95,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
                         path = "/";
                     }
                     var itemPath = this.Combine(path, itemName);
-                    results.Add(new AwsFile(itemPath, file.Size, file.LastModified));
+                    yield return new AwsFile(itemPath, file.Size, file.LastModified);
                 }
             }
 
@@ -110,12 +108,8 @@ namespace OrchardCore.FileStorage.Amazon.S3
                 }
                 
                 folderPath = folderPath.TrimEnd('/');
-                results.Add(new AwsDirectory(folderPath, _clock.UtcNow));
+                yield return new AwsDirectory(folderPath, _clock.UtcNow);
             }
-            
-            return results
-                .OrderByDescending(x => x.IsDirectory)
-                .ToArray();
         }
 
         public async Task<bool> TryCreateDirectoryAsync(string path)
