@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <PackageVersion>1.0.1</PackageVersion>
+        <PackageVersion>1.0.2</PackageVersion>
         <Title>OrchardCore.Media.Amazon.S3</Title>
         <Authors>ngv</Authors>
         <Description>Amazon S3 provider for the OrchardCore</Description>
@@ -12,11 +12,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OrchardCore.Abstractions" Version="1.0.0-rc2-13450" />
-      <PackageReference Include="OrchardCore.Infrastructure.Abstractions" Version="1.0.0-rc2-13450" />
-      <PackageReference Include="OrchardCore.Media.Abstractions" Version="1.0.0-rc2-13450" />
-      <PackageReference Include="OrchardCore.Media.Core" Version="1.0.0-rc2-13450" />
-      <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-13450" />
+      <PackageReference Include="OrchardCore.Abstractions" Version="1.0.0" />
+      <PackageReference Include="OrchardCore.Infrastructure.Abstractions" Version="1.0.0" />
+      <PackageReference Include="OrchardCore.Media.Abstractions" Version="1.0.0" />
+      <PackageReference Include="OrchardCore.Media.Core" Version="1.0.0" />
+      <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
