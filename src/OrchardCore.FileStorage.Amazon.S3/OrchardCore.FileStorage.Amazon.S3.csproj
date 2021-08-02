@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <PackageVersion>1.0.2</PackageVersion>
+        <PackageVersion>1.0.3</PackageVersion>
         <Title>OrchardCore.Media.Amazon.S3</Title>
         <Authors>ngv</Authors>
         <PackageProjectUrl>https://github.com/neglectedvalue/OrchardCore.Media.Amazon.S3</PackageProjectUrl>
         <RepositoryUrl>https://github.com/neglectedvalue/OrchardCore.Media.Amazon.S3</RepositoryUrl>
         <PackageId>ngv.OrchardCore.FileStorage.Amazon.S3</PackageId>
+        <LangVersion>8</LangVersion>
+        <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
