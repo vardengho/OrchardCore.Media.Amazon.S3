@@ -1,4 +1,4 @@
-name: OrchardCore Media Amazon S3 - Release
+name: Publish
 
 on:
   push:
@@ -7,39 +7,24 @@ on:
   
 jobs:
   publish-nuget:
-
-    strategy:
-      matrix:
-        dotnet-version: ['3.1.x', '5.0.x' ]
-
+    
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core ${{ matrix.dotnet-version }}
-      uses: actions/setup-dotnet@v1.7.2
-      with:
-        dotnet-version: ${{ matrix.dotnet-version }}
 
-    - name: Setup .NET Core 3.1
+    - name: Setup dotnet 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.*
 
-    - name: Setup .NET Core 5.0
+    - name: Setup dotnet 5.0
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.*
-        
-    - name: Fix nuget restore issue
-      run: |
-          apt update && apt --only-upgrade install ca-certificates -y
-
-    - name: Install dependencies
-      run: dotnet restore
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release
 
     - name: Publish to NuGet OrchardCore.Media.Amazon.S3
       uses: brandedoutcast/publish-nuget@v2
