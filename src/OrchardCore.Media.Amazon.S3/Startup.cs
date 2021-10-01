@@ -138,16 +138,9 @@ namespace OrchardCore.Media.Amazon.S3
 
                     var fileStore = new AwsFileStore(clock, storeOptions, amazonS3Client, siteService);
 
-                    var mediaUrlBase =
-                        $"/{fileStore.Combine(shellSettings.RequestUrlPrefix, mediaOptions.AssetsRequestPath)}";
-
-                    var originalPathBase = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext
-                        ?.Features.Get<ShellContextFeature>().OriginalPathBase;
-
-                    if (originalPathBase.HasValue)
-                    {
-                        mediaUrlBase = fileStore.Combine(originalPathBase.Value, mediaUrlBase);
-                    }
+                    var siteName = siteService.GetSiteSettingsAsync().GetAwaiter().GetResult()
+                        .SiteName;
+                    var mediaUrlBase = $"/{siteName}";
 
                     return new DefaultMediaFileStore(fileStore,
                         mediaUrlBase,
