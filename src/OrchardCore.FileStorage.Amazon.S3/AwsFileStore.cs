@@ -1,6 +1,9 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using OrchardCore.Environment.Shell.Configuration;
+using OrchardCore.Settings;
+using System.ComponentModel;
 
 namespace OrchardCore.FileStorage.Amazon.S3
 {
@@ -12,26 +15,33 @@ namespace OrchardCore.FileStorage.Amazon.S3
     using System.Threading.Tasks;
     using FileStorage;
     using Modules;
-    
+
     public class AwsFileStore : IFileStore
     {
         private readonly IClock _clock;
         private readonly AwsStorageOptions _options;
-        private readonly string _basePrefix = null;
+        private readonly string _basePrefix;
         private readonly IAmazonS3 _amazonS3Client;
 
-        public AwsFileStore(IClock clock, AwsStorageOptions options, IAmazonS3 amazonS3Client)
+        public AwsFileStore(
+            IClock clock,
+            AwsStorageOptions options,
+            IAmazonS3 amazonS3Client,
+
+            ISiteService siteService)
         {
             _clock = clock;
             _options = options;
             _amazonS3Client = amazonS3Client;
-            
-            if (!string.IsNullOrEmpty(_options.BasePath))
-            {
-                _basePrefix = NormalizePrefix(_options.BasePath);
-            }
+
+            var siteName = siteService.GetSiteSettingsAsync().GetAwaiter().GetResult()
+                .SiteName;
+
+            _basePrefix = NormalizePrefix(
+                !string.IsNullOrEmpty(_options.BasePath)
+                    ? _options.BasePath : siteName);
         }
-        
+
         public async Task<IFileStoreEntry> GetFileInfoAsync(string path)
         {
             try
@@ -39,9 +49,9 @@ namespace OrchardCore.FileStorage.Amazon.S3
                 var objectMetadata = await _amazonS3Client.GetObjectMetadataAsync(new GetObjectMetadataRequest
                 {
                     BucketName = _options.BucketName,
-                    Key = this.Combine(_basePrefix, path)
+                    Key = this.Combine(_basePrefix, path),
                 });
-                
+
                 return new AwsFile(path, objectMetadata.ContentLength, objectMetadata.LastModified);
             }
             // Bucket or file does not exist
@@ -106,7 +116,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
                 {
                     folderPath = folderPath.Substring(_basePrefix.Length - 1);
                 }
-                
+
                 folderPath = folderPath.TrimEnd('/');
                 yield return new AwsDirectory(folderPath, _clock.UtcNow);
             }
@@ -121,7 +131,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
                     BucketName = _options.BucketName,
                     Key = NormalizePrefix(this.Combine(_basePrefix, path))
                 });
-                
+
                 return true;
             }
             catch (AmazonS3Exception)
@@ -139,7 +149,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
                     BucketName = _options.BucketName,
                     Key = this.Combine(_basePrefix, path)
                 });
-                
+
                 return true;
             }
             catch (AmazonS3Exception)
@@ -160,7 +170,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
                 BucketName = _options.BucketName,
                 Prefix = NormalizePrefix(this.Combine(_basePrefix, path))
             });
-            
+
             var deleteObjectsRequest = new DeleteObjectsRequest
             {
                 BucketName = _options.BucketName,
@@ -209,7 +219,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
 
                 if (listObjects.S3Objects.Any())
                 {
-                    throw new FileStoreException($"Cannot copy file '{srcPath}' because a file already exists in the new path '{dstPath}'.");   
+                    throw new FileStoreException($"Cannot copy file '{srcPath}' because a file already exists in the new path '{dstPath}'.");
                 }
 
                 var copyObjectResponse = await _amazonS3Client.CopyObjectAsync(new CopyObjectRequest
@@ -264,7 +274,7 @@ namespace OrchardCore.FileStorage.Amazon.S3
 
                     if (listObjects.S3Objects.Any())
                     {
-                        throw new FileStoreException($"Cannot create file '{path}' because it already exists.");    
+                        throw new FileStoreException($"Cannot create file '{path}' because it already exists.");
                     }
                 }
 

@@ -1,5 +1,7 @@
 ﻿using Amazon;
 using Amazon.S3;
+using OrchardCore.Settings;
+using System.ComponentModel;
 
 namespace OrchardCore.Media.Amazon.S3
 {
@@ -7,7 +9,7 @@ namespace OrchardCore.Media.Amazon.S3
     using System.IO;
     using System.Linq;
     using System.Text;
-    
+
     using Modules;
     using Environment.Shell.Configuration;
     using Environment.Shell;
@@ -16,7 +18,7 @@ namespace OrchardCore.Media.Amazon.S3
     using FileStorage;
     using OrchardCore.Media.Core.Events;
     using Events;
-    
+
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +26,7 @@ namespace OrchardCore.Media.Amazon.S3
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    
+
     [Feature("OrchardCore.Media.Amazon.S3")]
     public class Startup : Modules.StartupBase
     {
@@ -35,7 +37,7 @@ namespace OrchardCore.Media.Amazon.S3
         public Startup(IShellConfiguration configuration,
             IWebHostEnvironment webHostEnvironment,
             ILogger<Startup> logger)
-            => (_configuration, _webHostEnvironment, _logger) 
+            => (_configuration, _webHostEnvironment, _logger)
                 = (configuration, webHostEnvironment, logger);
 
         public override void ConfigureServices(IServiceCollection services)
@@ -93,7 +95,7 @@ namespace OrchardCore.Media.Amazon.S3
                     return new DefaultMediaFileStoreCacheFileProvider(logger, mediaOptions.AssetsRequestPath,
                         mediaCachePath);
                 });
-                
+
                 // Replace the default media file provider with the media cache file provider.
                 services.Replace(ServiceDescriptor.Singleton<IMediaFileProvider>(serviceProvider =>
                     serviceProvider.GetRequiredService<IMediaFileStoreCacheFileProvider>()));
@@ -117,12 +119,12 @@ namespace OrchardCore.Media.Amazon.S3
                         ForcePathStyle = true,
                         UseArnRegion = true
                     };
-                    
+
                     return new AmazonS3Client(options.Credentials.AccessKeyId,
                         options.Credentials.SecretKey,
                         config);
                 });
-                
+
                 services.Replace(ServiceDescriptor.Singleton<IMediaFileStore>(serviceProvider =>
                 {
                     var shellSettings = serviceProvider.GetRequiredService<ShellSettings>();
@@ -132,8 +134,9 @@ namespace OrchardCore.Media.Amazon.S3
                     var clock = serviceProvider.GetRequiredService<IClock>();
                     var logger = serviceProvider.GetRequiredService<ILogger<DefaultMediaFileStore>>();
                     var amazonS3Client = serviceProvider.GetService<IAmazonS3>();
+                    var siteService = serviceProvider.GetService<ISiteService>();
 
-                    var fileStore = new AwsFileStore(clock, storeOptions, amazonS3Client);
+                    var fileStore = new AwsFileStore(clock, storeOptions, amazonS3Client, siteService);
 
                     var mediaUrlBase =
                         $"/{fileStore.Combine(shellSettings.RequestUrlPrefix, mediaOptions.AssetsRequestPath)}";
@@ -159,8 +162,8 @@ namespace OrchardCore.Media.Amazon.S3
         }
 
         private string GetMediaCachePath(IWebHostEnvironment hostingEnvironment,
-            string assetsPath, ShellSettings shellSettings) 
-            => PathExtensions.Combine(hostingEnvironment.WebRootPath, 
+            string assetsPath, ShellSettings shellSettings)
+            => PathExtensions.Combine(hostingEnvironment.WebRootPath,
                 assetsPath, shellSettings.Name);
     }
 }

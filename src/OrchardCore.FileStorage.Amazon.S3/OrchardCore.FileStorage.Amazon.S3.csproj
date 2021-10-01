@@ -16,6 +16,7 @@
       <PackageReference Include="AWSSDK.SecurityToken" Version="3.7.1.34" />
       <PackageReference Include="OrchardCore.Abstractions" Version="1.0.0" />
       <PackageReference Include="OrchardCore.FileStorage.Abstractions" Version="1.0.0" />
+      <PackageReference Include="OrchardCore.Infrastructure.Abstractions" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
