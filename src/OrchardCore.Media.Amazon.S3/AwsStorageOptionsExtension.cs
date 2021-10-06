@@ -24,23 +24,9 @@ namespace OrchardCore.Media.Amazon.S3
                 yield return new ValidationResult(Constants.ValidationMessages.BucketNameIsEmpty);
             }
 
-            if (options.Credentials != null)
+            if (string.IsNullOrWhiteSpace(options.Credentials?.RegionEndpoint))
             {
-                if (string.IsNullOrWhiteSpace(options.Credentials.SecretKey))
-                {
-                    yield return new ValidationResult(Constants.ValidationMessages.SecretKeyIsEmpty);
-                }
-
-                if (string.IsNullOrWhiteSpace(options.Credentials.AccessKeyId))
-                {
-                    yield return new ValidationResult(Constants.ValidationMessages.AccessKeyIdIsEmpty);
-                }
-
-                if (string.IsNullOrWhiteSpace(options.Credentials.RegionEndpoint))
-                {
-                    yield return new ValidationResult(Constants.ValidationMessages.RegionEndpointIsEmpty);
-                }
-
+                yield return new ValidationResult(Constants.ValidationMessages.RegionEndpointIsEmpty);
             }
         }
         
