@@ -57,13 +57,12 @@ namespace OrchardCore.Media.Amazon.S3
                 if (_webHostEnvironment.IsDevelopment())
                 {
                     _logger.LogInformation(
-                        $"S3 Media configuration validation failed: { validationErrors } fallback to File storage", stringBuilder.ToString());
+                        $"S3 Media configuration validation failed: {stringBuilder} fallback to File storage");
                 }
                 else
                 {
                     _logger.LogError(
-                        $"S3 Media configuration validation failed with errors: { validationErrors } fallback to File storage",
-                        stringBuilder.ToString());
+                        $"S3 Media configuration validation failed with errors: {stringBuilder} fallback to File storage");
                 }
             }
             else
