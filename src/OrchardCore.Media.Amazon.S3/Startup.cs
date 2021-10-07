@@ -1,7 +1,7 @@
 ﻿using Amazon;
 using Amazon.S3;
 using OrchardCore.Settings;
-using System.ComponentModel;
+using Amazon.Runtime;
 
 namespace OrchardCore.Media.Amazon.S3
 {
@@ -15,12 +15,10 @@ namespace OrchardCore.Media.Amazon.S3
     using Environment.Shell;
     using OrchardCore.FileStorage.Amazon.S3;
     using Core;
-    using FileStorage;
     using OrchardCore.Media.Core.Events;
     using Events;
 
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
@@ -119,6 +117,11 @@ namespace OrchardCore.Media.Amazon.S3
                         UseArnRegion = true
                     };
 
+                    if (string.IsNullOrWhiteSpace(options.Credentials.AccessKeyId))
+                    {
+                        return new AmazonS3Client(new ECSTaskCredentials(), config);
+                    }
+                    
                     return new AmazonS3Client(options.Credentials.AccessKeyId,
                         options.Credentials.SecretKey,
                         config);
